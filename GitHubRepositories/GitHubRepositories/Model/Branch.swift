@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct Branch: Codable, Identifiable {
+struct Branch: Decodable, Identifiable {
     let id = UUID()
     var name: String
     var commit: commit
 }
 
-struct commit: Codable {
+struct commit: Decodable {
     var sha: String
     var url: String
 }

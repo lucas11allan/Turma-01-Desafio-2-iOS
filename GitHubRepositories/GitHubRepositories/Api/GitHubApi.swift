@@ -27,6 +27,20 @@ class GitHubApi {
             completion(repositories)
         }
     }
+    
+    func fetchBranches(url: String, completion: @escaping ([Branch]) -> ()) {
+        let bodyEncoder = JSONDecoder()
+        bodyEncoder.dateDecodingStrategy = .iso8601
+        AF.request(url) { urlRequest in
+            ///            alterar linha abaixo adicionando seu token do github
+//            urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
+        }
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: [Branch].self, decoder: bodyEncoder) { response in
+            guard let branchs = response.value else { return }
+            completion(branchs)
+        }
+    }
 }
 
 
