@@ -24,8 +24,23 @@ struct RepositoryDetailView: View {
                 
                 List(pulls!, id: \.id) { pull in
                     VStack {
-                        Text(pull.user.login)
-                        AsyncImageComponent(url: pull.user.avatar_url, height: 40)
+                        Text(pull.title)
+                        HStack {
+                            VStack{
+                                Text(pull.user.login)
+                                AsyncImageComponent(url: pull.user.avatar_url, height: 40)
+                            }
+                            Text(pull.body)
+                        }
+                        HStack {
+                            Label(String("Creation: \(pull.created_at)"), systemImage: "star")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                            Label(String("Last Update: \(pull.updated_at)"), systemImage: "star")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        
                     }
                     
                 }
