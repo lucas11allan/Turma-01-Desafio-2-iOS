@@ -9,7 +9,7 @@ import Foundation
 
 struct PullRequest: Decodable, Identifiable {
     let id = UUID()
-    let url: String
+    let html_url: String
     let user: user
     let state: String
     let title: String

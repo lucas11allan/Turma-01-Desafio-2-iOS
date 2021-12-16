@@ -23,25 +23,9 @@ struct RepositoryDetailView: View {
                     .padding(.horizontal)
                 
                 List(pulls!, id: \.id) { pull in
-                    VStack {
-                        Text(pull.title)
-                        HStack {
-                            VStack{
-                                Text(pull.user.login)
-                                AsyncImageComponent(url: pull.user.avatar_url, height: 40)
-                            }
-                            Text(pull.body)
-                        }
-                        HStack {
-                            Label(String("Creation: \(pull.created_at)"), systemImage: "star")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                            Label(String("Last Update: \(pull.updated_at)"), systemImage: "star")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                    }
+                    Link(destination: URL(string: pull.html_url)!, label: {
+                        PullRequestCell(pull: pull)
+                    })
                     
                 }
             }
@@ -54,6 +38,43 @@ struct RepositoryDetailView: View {
                         isFetched = true
                     }
                 }
+        }
+    }
+}
+
+struct PullRequestCell: View {
+    var pull: PullRequest
+    var body: some View {
+        VStack {
+            HStack {
+                VStack{
+                    Text(pull.user.login)
+                    AsyncImageComponent(url: pull.user.avatar_url, height: 40)
+                }
+                
+                Spacer()
+                
+                Text(pull.title)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+            
+            Text(pull.body)
+                .fontWeight(.semibold)
+                .lineLimit(5)
+            
+            HStack {
+                Label(String("Creation: \(pull.created_at)"), systemImage: "star")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                Label(String("Last Update: \(pull.updated_at)"), systemImage: "star")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            
         }
     }
 }
