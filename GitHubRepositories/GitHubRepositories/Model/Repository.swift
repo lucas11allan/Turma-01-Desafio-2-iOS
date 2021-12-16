@@ -20,6 +20,7 @@ struct Repository: Decodable, Identifiable {
     let language: String
     let forks_count: Int
     let topics: [String]
+    let pulls_url: String
 }
 
 struct owner: Codable {
