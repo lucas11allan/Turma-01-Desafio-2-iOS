@@ -7,7 +7,7 @@
 
 import Foundation
 
-class RepositoriesModel {
+class RepositoriesListViewModel {
     var repositories: Repositories?
     
     func updateRepositories(_ response: Repositories) {

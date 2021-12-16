@@ -26,5 +26,6 @@ struct owner: Codable {
     let avatar_url: String
     let followers_url: String
     let following_url: String
+    let login: String
     
 }

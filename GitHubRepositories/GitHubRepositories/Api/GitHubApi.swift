@@ -28,9 +28,10 @@ class GitHubApi {
         }
     }
     
-    func fetchBranches(url: String, completion: @escaping ([Branch]) -> ()) {
+    func fetchBranches(repository: String, completion: @escaping ([Branch]) -> ()) {
         let bodyEncoder = JSONDecoder()
         bodyEncoder.dateDecodingStrategy = .iso8601
+        let url = "https://api.github.com/repos/" + repository + "/branches"
         AF.request(url) { urlRequest in
             ///            alterar linha abaixo adicionando seu token do github
 //            urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
