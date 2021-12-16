@@ -7,10 +7,29 @@
 
 import Foundation
 
-class RepositoriesListViewModel {
-    var repositories: Repositories?
+class RepositoriesListViewModel: ObservableObject {
+    @Published var repositories: [Repository] = []
+    var nextpage = 1
     
-    func updateRepositories(_ response: Repositories) {
-        repositories = response
+    func loadRepositoriesIfNeeded(currentRepository repository: Repository?) {
+        guard let repository = repository else {
+            loadRepositories()
+            return
+        }
+        
+        let tresholdIndex = repositories.index(repositories.endIndex, offsetBy: -1)
+        if repositories.firstIndex(where: { $0.id == repository.id }) == tresholdIndex {
+            loadRepositories()
+        }
+        
     }
+    
+    func loadRepositories() {
+        GitHubApi().fetchRepositories(page: nextpage) { (apiResponse) in
+            self.repositories += apiResponse.items
+            print(self.nextpage)
+            self.nextpage += 1
+        }
+    }
+    
 }

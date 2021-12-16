@@ -10,21 +10,23 @@ import SwiftUI
 struct RepositoriesListView: View {
     @State var repositories: [Repository] = []
     @State var isFetched:Bool = false
+    @StateObject var viewModel = RepositoriesListViewModel()
     
     var body: some View {
         NavigationView {
-            List(repositories, id: \.id) { repository in
+            List(viewModel.repositories, id: \.id) { repository in
                 NavigationLink(destination: RepositoryDetailView(repository: repository), label: {
                     RepositoryCell(repository: repository)
+                        .onAppear {
+                            viewModel.loadRepositoriesIfNeeded(currentRepository: repository)
+                        }
                 })
                 
             }
             .navigationTitle("GitHub Swift Projects")
         }
         .onAppear {
-            GitHubApi().fetchRepositories { (apiResponse) in
-                repositories = apiResponse.items
-            }
+            viewModel.loadRepositories()
         }
     }
 }

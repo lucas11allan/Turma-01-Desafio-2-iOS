@@ -26,7 +26,6 @@ struct RepositoryDetailView: View {
                     Link(destination: URL(string: pull.html_url)!, label: {
                         PullRequestCell(pull: pull)
                     })
-                    
                 }
             }
             

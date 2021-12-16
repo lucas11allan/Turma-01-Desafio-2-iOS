@@ -14,16 +14,20 @@ class GitHubApi {
         let paramEncoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(keyEncoding: .convertToSnakeCase))
         let bodyEncoder = JSONDecoder()
         bodyEncoder.dateDecodingStrategy = .iso8601
-        AF.request("https://api.github.com/search/repositories?q=language:Swift&sort=stars&page=\(page)",
+//        bodyEncoder.keyDecodingStrategy = .convertFromSnakeCase
+        AF.request("https://api.github.com/search/repositories?q=language:Swift&sort=Stars&page=\(page)",
                    parameters: params,
                    encoder: paramEncoder
         ) { urlRequest in
             ///            alterar linha abaixo adicionando seu token do github
-//            urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
+            urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
         }
         .validate(statusCode: 200..<300)
         .responseDecodable(of: Repositories.self, decoder: bodyEncoder) { response in
             guard let repositories = response.value else { return }
+            for i in repositories.items {
+                print(i.full_name)
+            }
             completion(repositories)
         }
     }
