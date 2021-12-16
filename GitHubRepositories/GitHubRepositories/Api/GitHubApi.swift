@@ -10,11 +10,10 @@ import Alamofire
 
 class GitHubApi {
     func fetchRepositories(page: Int = 1, completion: @escaping (Repositories) -> ()) {
-        let params = QueryParam(q: "language:Swift", sort: "Stars")
+        let params = QueryParam(q: "language:Swift", sort: "Stars", page: page, perPage: 30)
         let paramEncoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(keyEncoding: .convertToSnakeCase))
         let bodyEncoder = JSONDecoder()
         bodyEncoder.dateDecodingStrategy = .iso8601
-//        bodyEncoder.keyDecodingStrategy = .convertFromSnakeCase
         AF.request("https://api.github.com/search/repositories?q=language:Swift&sort=Stars&page=\(page)",
                    parameters: params,
                    encoder: paramEncoder
@@ -24,6 +23,7 @@ class GitHubApi {
         }
         .validate(statusCode: 200..<300)
         .responseDecodable(of: Repositories.self, decoder: bodyEncoder) { response in
+            debugPrint(response)
             guard let repositories = response.value else { return }
             for i in repositories.items {
                 print(i.full_name)

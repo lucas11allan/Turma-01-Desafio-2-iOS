@@ -12,7 +12,7 @@ struct Repository: Decodable, Identifiable {
     let name: String
     let full_name: String
     let owner: owner
-    let description: String
+    let description: String?
     let url: String
     let created_at: Date
     let updated_at: Date

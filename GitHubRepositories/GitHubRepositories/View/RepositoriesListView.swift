@@ -51,9 +51,9 @@ struct RepositoryCell: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
-            Text(repository.description)
-                .font(.body)
-                .padding()
+//            Text(repository.description!)
+//                .font(.body)
+//                .padding()
             
             HStack(spacing: 40){
                 Label(String("Forks: \(repository.forks_count)"), systemImage: "tuningfork")

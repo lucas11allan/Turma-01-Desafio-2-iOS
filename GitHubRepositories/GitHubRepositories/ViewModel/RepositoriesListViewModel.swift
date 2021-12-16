@@ -27,7 +27,6 @@ class RepositoriesListViewModel: ObservableObject {
     func loadRepositories() {
         GitHubApi().fetchRepositories(page: nextpage) { (apiResponse) in
             self.repositories += apiResponse.items
-            print(self.nextpage)
             self.nextpage += 1
         }
     }
