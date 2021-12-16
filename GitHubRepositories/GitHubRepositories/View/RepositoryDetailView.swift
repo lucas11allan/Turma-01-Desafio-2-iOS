@@ -10,36 +10,32 @@ import SwiftUI
 struct RepositoryDetailView: View {
     @State var repository: Repository
     @State var isFetched:Bool = false
-    @State var branches: [Branch]?
+    @State var pulls: [PullRequest]?
     
     var body: some View {
         if isFetched {
             VStack {
                 AsyncImageComponent(url: repository.owner.avatar_url, height: 80)
-                    .padding()
-                    .scaledToFit()
-                    .cornerRadius(12)
                 
                 Text(repository.name)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.horizontal)
                 
-                List(branches!, id: \.id) { branch in
-                    Text(branch.name)
-                    Text(branch.commit.sha)
-                }
-                
-                Spacer()
+                List(pulls!, id: \.id) { pull in
+                    VStack {
+                        Text(pull.user.login)
+                        AsyncImageComponent(url: pull.user.avatar_url, height: 40)
+                    }
                     
-                ShareButton(title: "Open PR Page")
+                }
             }
             
         } else {
             ProgressView()
                 .onAppear {
-                    GitHubApi().fetchBranches(repository: repository.full_name) { (apiResponse) in
-                        branches = apiResponse
+                    GitHubApi().fetchPulls(repository: repository.full_name) { (apiResponse) in
+                        pulls = apiResponse
                         isFetched = true
                     }
                 }
