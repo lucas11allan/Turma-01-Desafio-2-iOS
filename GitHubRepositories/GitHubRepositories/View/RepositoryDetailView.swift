@@ -9,11 +9,10 @@ import SwiftUI
 
 struct RepositoryDetailView: View {
     @State var repository: Repository
-    @State var isFetched:Bool = false
-    @State var pulls: [PullRequest]?
+    @StateObject var viewModel = RepositoryDetailViewModel()
     
     var body: some View {
-        if isFetched {
+        if viewModel.isFetched {
             VStack {
                 AsyncImageComponent(url: repository.owner.avatar_url, height: 80)
                 
@@ -22,7 +21,7 @@ struct RepositoryDetailView: View {
                     .fontWeight(.semibold)
                     .padding(.horizontal)
                 
-                List(pulls!, id: \.id) { pull in
+                List(viewModel.pulls!, id: \.id) { pull in
                     Link(destination: URL(string: pull.html_url)!, label: {
                         PullRequestCell(pull: pull)
                     })
@@ -32,14 +31,12 @@ struct RepositoryDetailView: View {
         } else {
             ProgressView()
                 .onAppear {
-                    GitHubApi().fetchPulls(repository: repository.full_name) { (apiResponse) in
-                        pulls = apiResponse
-                        isFetched = true
-                    }
+                    viewModel.getPulls(adress: repository.full_name)
                 }
         }
     }
 }
+
 
 struct PullRequestCell: View {
     var pull: PullRequest
@@ -75,6 +72,7 @@ struct PullRequestCell: View {
             }
             
         }
+        .foregroundColor(.black)
     }
 }
 

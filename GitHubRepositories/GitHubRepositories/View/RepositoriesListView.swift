@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct RepositoriesListView: View {
-    @State var repositories: [Repository] = []
-    @State var isFetched:Bool = false
     @StateObject var viewModel = RepositoriesListViewModel()
     
     var body: some View {
@@ -51,10 +49,13 @@ struct RepositoryCell: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
-//            Text(repository.description!)
-//                .font(.body)
-//                .padding()
             
+            if let description = repository.description {
+                Text(description)
+                    .font(.body)
+                    .padding()
+            }
+
             HStack(spacing: 40){
                 Label(String("Forks: \(repository.forks_count)"), systemImage: "tuningfork")
                     .font(.subheadline)

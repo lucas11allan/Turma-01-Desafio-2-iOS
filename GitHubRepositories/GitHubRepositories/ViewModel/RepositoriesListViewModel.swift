@@ -9,6 +9,8 @@ import Foundation
 
 class RepositoriesListViewModel: ObservableObject {
     @Published var repositories: [Repository] = []
+    @Published var isFetched: Bool = false
+    
     var nextpage = 1
     
     func loadRepositoriesIfNeeded(currentRepository repository: Repository?) {
