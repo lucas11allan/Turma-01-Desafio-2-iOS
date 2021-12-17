@@ -21,7 +21,8 @@ struct RepositoriesListView: View {
                 })
                 
             }
-            .navigationTitle("GitHub Swift Projects")
+            .navigationBarTitle("GitHub: Swift Projects", displayMode: .inline)
+            
         }
         .onAppear {
             viewModel.loadRepositories()
@@ -40,20 +41,24 @@ struct RepositoryCell: View {
                         .fontWeight(.semibold)
                         .lineLimit(2)
                         .minimumScaleFactor(0.5)
-                    AsyncImageComponent(url: repository.owner.avatar_url, height: 70)
+                    
+                    Spacer()
+                    
+                    AsyncImageComponent(url: repository.owner.avatar_url, height: 80)
                 }
+                
                 Text(repository.name)
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .lineLimit(2)
+                    .lineLimit(3)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
+                    .frame(width: 150, alignment: .center)
             }
             
             if let description = repository.description {
                 Text(description)
                     .font(.body)
-                    .padding()
             }
 
             HStack(spacing: 40){
@@ -64,6 +69,7 @@ struct RepositoryCell: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
+            .padding()
         }
     }
 }

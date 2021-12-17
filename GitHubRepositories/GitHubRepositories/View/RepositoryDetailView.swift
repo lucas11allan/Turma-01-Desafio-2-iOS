@@ -13,20 +13,33 @@ struct RepositoryDetailView: View {
     
     var body: some View {
         if viewModel.isFetched {
+            Text("Pull Request's List")
+                .font(.title2)
             VStack {
                 AsyncImageComponent(url: repository.owner.avatar_url, height: 80)
                 
                 Text(repository.name)
-                    .font(.title2)
+                    .font(.title3)
                     .fontWeight(.semibold)
                     .padding(.horizontal)
                 
-                List(viewModel.pulls!, id: \.id) { pull in
-                    Link(destination: URL(string: pull.html_url)!, label: {
-                        PullRequestCell(pull: pull)
-                    })
+                if viewModel.pulls.count == 0 {
+                    Spacer()
+                    Text("There aren't any open Pull Requests in this repository")
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    Spacer()
+                } else {
+                    List(viewModel.pulls, id: \.id) { pull in
+                        Link(destination: URL(string: pull.html_url)!, label: {
+                            PullRequestCell(pull: pull)
+                        })
+                    }
                 }
+                
             }
+            .navigationBarTitle("", displayMode: .inline)
             
         } else {
             ProgressView()
@@ -45,7 +58,8 @@ struct PullRequestCell: View {
             HStack {
                 VStack{
                     Text(pull.user.login)
-                    AsyncImageComponent(url: pull.user.avatar_url, height: 40)
+                        .fontWeight(.semibold)
+                    AsyncImageComponent(url: pull.user.avatar_url, height: 60)
                 }
                 
                 Spacer()
@@ -59,16 +73,15 @@ struct PullRequestCell: View {
             }
             
             Text(pull.body)
-                .fontWeight(.semibold)
                 .lineLimit(5)
+                .padding(.vertical)
             
             HStack {
-                Label(String("Creation: \(pull.created_at)"), systemImage: "star")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                Label(String("Last Update: \(pull.updated_at)"), systemImage: "star")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                MultiLineLabelCentered(text: String("Creation:\n\(pull.created_at.formatted(.dateTime.year().month().day()))"), image: "star")
+                
+                Spacer()
+                
+                MultiLineLabelCentered(text: String("Last Update:\n\(pull.updated_at.formatted(.dateTime.year().month().day()))"), image: "arrow.up.circle")
             }
             
         }

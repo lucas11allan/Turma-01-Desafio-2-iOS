@@ -18,16 +18,11 @@ class GitHubApi {
                    parameters: params,
                    encoder: paramEncoder
         ) { urlRequest in
-            ///            alterar linha abaixo adicionando seu token do github
             urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
         }
         .validate(statusCode: 200..<300)
         .responseDecodable(of: Repositories.self, decoder: bodyEncoder) { response in
-            debugPrint(response)
             guard let repositories = response.value else { return }
-            for i in repositories.items {
-                print(i.full_name)
-            }
             completion(repositories)
         }
     }
@@ -37,8 +32,7 @@ class GitHubApi {
         bodyEncoder.dateDecodingStrategy = .iso8601
         let url = "https://api.github.com/repos/\(repository)/branches"
         AF.request(url) { urlRequest in
-            ///            alterar linha abaixo adicionando seu token do github
-//            urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
+            urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
         }
         .validate(statusCode: 200..<300)
         .responseDecodable(of: [Branch].self, decoder: bodyEncoder) { response in
@@ -52,12 +46,14 @@ class GitHubApi {
         bodyEncoder.dateDecodingStrategy = .iso8601
         let url = "https://api.github.com/repos/\(repository)/pulls"
         AF.request(url) { urlRequest in
-            ///            alterar linha abaixo adicionando seu token do github
-//            urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
+            urlRequest.addValue("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", forHTTPHeaderField: "Authorization")
         }
         .validate(statusCode: 200..<300)
         .responseDecodable(of: [PullRequest].self, decoder: bodyEncoder) { response in
-            guard let pulls = response.value else { return }
+            guard let pulls = response.value else {
+                completion([])
+                return
+            }
             completion(pulls)
         }
     }

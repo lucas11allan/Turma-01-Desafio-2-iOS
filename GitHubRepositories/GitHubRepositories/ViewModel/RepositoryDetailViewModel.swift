@@ -9,7 +9,7 @@ import Foundation
 
 class RepositoryDetailViewModel: ObservableObject {
     @Published var isFetched: Bool = false
-    @Published var pulls: [PullRequest]?
+    @Published var pulls: [PullRequest] = []
     
     func getPulls(adress: String) {
         GitHubApi().fetchPulls(repository: adress) { (apiResponse) in
