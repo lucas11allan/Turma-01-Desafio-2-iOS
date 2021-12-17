@@ -15,6 +15,7 @@ struct RepositoryDetailView: View {
         if viewModel.isFetched {
             Text("Pull Request's List")
                 .font(.title2)
+                .fontWeight(.semibold)
             VStack {
                 AsyncImageComponent(url: repository.owner.avatar_url, height: 80)
                 
@@ -67,7 +68,7 @@ struct PullRequestCell: View {
                 Text(pull.title)
                     .font(.title2)
                     .fontWeight(.semibold)
-                    .lineLimit(2)
+                    .lineLimit(3)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
