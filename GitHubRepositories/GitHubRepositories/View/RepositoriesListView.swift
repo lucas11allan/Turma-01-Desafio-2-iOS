@@ -24,6 +24,7 @@ struct RepositoriesListView: View {
             .navigationBarTitle("GitHub: Swift Projects", displayMode: .inline)
             
         }
+        .navigationViewStyle(.stack)
         .onAppear {
             viewModel.loadRepositories()
         }
